@@ -5,7 +5,7 @@ const http = require("http");
 const cors = require("cors");
 const { routes } = require("./src/routes");
 // настроим подключение к бд
-mongoose.connect("mongodb://localhost:27017/mevnshop", {
+mongoose.connect("mongodb+srv://ararat:maxt9leo123@cluster0.skcm1.gcp.mongodb.net/test?retryWrites=true&w=majority", {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -22,7 +22,7 @@ routes.forEach((item) => {
 });
 
 // объявим наши  роуты
-const PORT = 3000;
+const PORT = 1710;
 http.createServer({}, app).listen(PORT);
 
 console.log(`Server running at ${PORT}`);

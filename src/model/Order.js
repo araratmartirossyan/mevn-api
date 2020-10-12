@@ -31,6 +31,10 @@ const schema = new Schema({
     type: String,
     default: ''
   },
+  status: {
+    type: String,
+    default: 'Pending'
+  },
   products: [
     {
       type: ObjectId,
@@ -39,4 +43,4 @@ const schema = new Schema({
   ],
 });
 
-module.exports = model("Category", schema);
+module.exports = model("Order", schema);
