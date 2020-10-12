@@ -12,7 +12,7 @@ const createPaymentIntent = async ({ body: { fullname, address, phone, email, pr
       throw new Error('Адрес обязателен')
     }
 
-    const amount = sum(products.map(i => Number(i.amount)))
+    const amount = sum(products.map(i => Number(i.price)))
     const prepareOrder = {
       fullname, address, phone, email, products, amount
     }
