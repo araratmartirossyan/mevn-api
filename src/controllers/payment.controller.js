@@ -16,7 +16,9 @@ const createPaymentIntent = async ({ body: { fullname, address, phone, email, pr
     }
 
     const amount = sum(products.map(i => Number(i.price)))
+
     const productsIds = products.map(({ _id }) => _id)
+
     const prepareOrder = {
       fullname, address, phone, email, products: productsIds, amount
     }
