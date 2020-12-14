@@ -1,3 +1,3 @@
 module.exports = {
-  routes: ['categories', 'products', 'payment', 'auth'],
+  routes: ['categories', 'products', 'payment', 'auth', 'orders'],
 };
