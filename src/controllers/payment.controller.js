@@ -1,43 +1,53 @@
 const dollarsToCents = require('dollars-to-cents');
-const { Order } = require('../model')
-const { createUserConfirmationOrderEmail, createAdminConfirmationOrderEmail } = require('./mail.controller')
+const { Order } = require('../model');
+const {
+  createUserConfirmationOrderEmail,
+  createAdminConfirmationOrderEmail,
+} = require('./mail.controller');
 
-const { sum } = require('ramda')
+const { sum } = require('ramda');
 
 const stripe = require('stripe')(
   'sk_test_51H0jsgJjMphy3gtYka8ebhPtKrWueI9YK3doRTKSShU2ACKGJsCbDZVcvnZrSHaxunwfUo2WnPsNBV0O0hCmldL100xbJGcaY0',
 );
 
-const createPaymentIntent = async ({ body: { fullname, address, phone, email, products } }, res) => {
+const createPaymentIntent = async (
+  { body: { fullname, address, phone, email, products } },
+  res,
+) => {
   try {
-
     if (!address) {
-      throw new Error('Адрес обязателен')
+      throw new Error('Адрес обязателен');
     }
 
-    const amount = sum(products.map(i => Number(i.price)))
+    const amount = sum(products.map((i) => Number(i.price)));
 
-    const productsIds = products.map(({ _id }) => _id)
+    const productsIds = products.map(({ _id }) => _id);
 
     const prepareOrder = {
-      fullname, address, phone, email, products: productsIds, amount
-    }
+      fullname,
+      address,
+      phone,
+      email,
+      products: productsIds,
+      amount,
+    };
 
-    const newOrder = await new Order(prepareOrder)
-    const saveOrder = await newOrder.save()
+    const newOrder = await new Order(prepareOrder);
+    const saveOrder = await newOrder.save();
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: dollarsToCents(amount),
       currency: 'eur',
       payment_method_types: ['card'],
       metadata: {
-        orderId: String(saveOrder._id)
-      }
+        orderId: String(saveOrder._id),
+      },
     });
 
     return res.status(200).send({
       paymentIntent,
-      saveOrder
+      saveOrder,
     });
   } catch (err) {
     res.status(500).send(err);
@@ -46,23 +56,25 @@ const createPaymentIntent = async ({ body: { fullname, address, phone, email, pr
 
 const stripeWebHook = async ({ body: { data } }, res) => {
   try {
-    const { metadata: { orderId } } = data.object
-    const order = await Order.findById(orderId)
+    const {
+      metadata: { orderId },
+    } = data.object;
+    const order = await Order.findById(orderId);
     if (!order) {
-      throw new Error('Order not found')
+      throw new Error('Order not found');
     }
 
-    await Order.findByIdAndUpdate(orderId, { status: 'Paid' })
-    createUserConfirmationOrderEmail(order)
-    createAdminConfirmationOrderEmail(order)
-    return res.status(200).send('success')
+    await Order.findByIdAndUpdate(orderId, { status: 'Paid' });
+    createUserConfirmationOrderEmail(order);
+    createAdminConfirmationOrderEmail(order);
+    return res.status(200).send('success');
   } catch (err) {
-    console.log(err, 'ERROR')
+    console.log(err, 'ERROR');
     res.status(500).send(err);
   }
 };
 
 module.exports = {
   createPaymentIntent,
-  stripeWebHook
+  stripeWebHook,
 };

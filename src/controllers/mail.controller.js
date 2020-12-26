@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
   service: 'Yandex',
@@ -8,13 +8,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 const createUserConfirmationOrderEmail = async ({ _id, email }) => {
-
   const mail = await transporter.sendMail({
     from: `"IGWT delivery" <delivery@incodewetrust.ru>`, // sender address
     to: `${email}`, // list of receivers
-    subject: "Подтверждение заказа", // Subject line
+    subject: 'Подтверждение заказа', // Subject line
     text: `Ваш заказ с номером  ${_id} подтвержден`, // plain text body
     html: `
       <ul class="list-group">
@@ -24,15 +22,16 @@ const createUserConfirmationOrderEmail = async ({ _id, email }) => {
     `,
   });
 
-  return mail
-
-}
-const createAdminConfirmationOrderEmail = async ({ _id, address, fullname, phone }, adminEmail = 'ararat@incodewetrust.ru',) => {
-
+  return mail;
+};
+const createAdminConfirmationOrderEmail = async (
+  { _id, address, fullname, phone },
+  adminEmail = 'ararat@incodewetrust.ru',
+) => {
   const mail = await transporter.sendMail({
     from: `"IGWT delivery" <delivery@incodewetrust.ru>`, // sender address
     to: `${adminEmail}`, // list of receivers
-    subject: "У вас новый заказ", // Subject line
+    subject: 'У вас новый заказ', // Subject line
     text: `Создан заказ с номером  ${_id}`, // plain text body
     html: `
       <h2>Новый заказ с номером ${_id}</h2>
@@ -45,11 +44,10 @@ const createAdminConfirmationOrderEmail = async ({ _id, address, fullname, phone
     `,
   });
 
-  return mail
-
-}
+  return mail;
+};
 
 module.exports = {
   createUserConfirmationOrderEmail,
-  createAdminConfirmationOrderEmail
-}
+  createAdminConfirmationOrderEmail,
+};
