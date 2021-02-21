@@ -22,17 +22,16 @@ jobs:
         with:
           source: '.'
           target: '/var/www/mevn-back'
-
-        - name: Execute
-          uses: appleboy/ssh-action@master
-          with:
-            HOST: ${{ secrets.HOST }}
-            USERNAME: ${{ secrets.USERNAME }}
-            PORT: ${{ secrets.PORT }}
-            KEY: ${{ secrets.SSHKEY }}
-            script: |
-              cd /var/www/mevn-back
-              yarn
-              yarn dev
-              pm2 reload 0
+      - name: Execute
+        uses: appleboy/ssh-action@master
+        with:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          script: |
+            cd /var/www/mevn-back
+            yarn
+            yarn dev
+            pm2 reload 0
 
