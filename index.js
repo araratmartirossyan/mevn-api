@@ -9,17 +9,16 @@ const { routes } = require('./src/routes');
 
 // настроим подключение к бд
 mongoose.connect(
-  `mongodb://${process.env.MONGO_HOST}:$${process.env.MONGO_PORT}/${process.env.DB_NAME}`,
+  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.c0z10.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
   {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   },
 );
-
 // инициализируем приложение
 const app = express();
-console.log('hello');
+
 app.use(cors());
 
 app.use(bodyParser.json());

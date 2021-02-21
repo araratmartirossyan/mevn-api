@@ -1,6 +1,6 @@
 
 # Используй последний node js в самом верху обозначаем из какого контейнера мы наследуем функцинал
-FROM node:14 as develop
+FROM node:14
 
 # для того что бы наш проект запустился нам нужно чтобы вначале запустился mongo
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.3/wait /wait
