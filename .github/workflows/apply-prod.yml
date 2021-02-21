@@ -18,7 +18,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
           PORT: 22
-          KEY: ${{ secrets.SSHKEY }}
+          KEY: ${{ secrets.KEY }}
         with:
           source: '.'
           target: '/var/www/mevn-back'
@@ -28,7 +28,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
-          KEY: ${{ secrets.SSHKEY }}
+          KEY: ${{ secrets.KEY }}
           script: |
             cd /var/www/mevn-back
             yarn
